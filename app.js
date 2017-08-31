@@ -6,12 +6,12 @@ const app = express();
 
 // TODO: Enter the path to your service account json file
 // Need help with this step go here: https://firebase.google.com/docs/admin/setup
-const serviceAccount = require("./REPLACE_WITH_SERIVCE_ACCOUNT.json");
+const serviceAccount = require("./fgsn-madexp-firebase-adminsdk-0k933-04b8e4b9e2.json");
 
 // TODO: Enter your database url from firebase
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://<DATABASE_NAME>.firebaseio.com/"
+  databaseURL: "https://fgsn-madexp.firebaseio.com/"
 });
 
 // Setup
