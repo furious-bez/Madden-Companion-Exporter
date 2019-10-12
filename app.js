@@ -19,7 +19,7 @@ app.get('*', (req, res) => {
   res.send('Madden Companion Exporter');
 });
 
-// app.post('/:username/:platform/:leagueId/leagueteams', (req, res) => {
+// /:username
 app.post('/:platform/:leagueId/leagueteams', (req, res) => {
   const db = admin.database();
   const ref = db.ref();
@@ -29,11 +29,11 @@ app.post('/:platform/:leagueId/leagueteams', (req, res) => {
   });
   req.on('end', () => {
     const { leagueTeamInfoList: teams } = JSON.parse(body);
-    // const {params: { username, leagueId }} = req;
+    // username
     const {params: { leagueId }} = req;
 
     teams.forEach(team => {
-      // const teamRef = ref.child(`data/${username}/${leagueId}/teams/${team.teamId}`);
+      // data/${username}
       const teamRef = ref.child(`data/${leagueId}/teams/${team.teamId}`);
       teamRef.update(team);
     });
@@ -42,7 +42,7 @@ app.post('/:platform/:leagueId/leagueteams', (req, res) => {
   });
 });
 
-// app.post('/:username/:platform/:leagueId/standings', (req, res) => {
+// /:username
 app.post('/:platform/:leagueId/standings', (req, res) => {
   const db = admin.database();
   const ref = db.ref();
@@ -52,12 +52,12 @@ app.post('/:platform/:leagueId/standings', (req, res) => {
   });
   req.on('end', () => {
     const { teamStandingInfoList: teams } = JSON.parse(body);
-    // const {params: { username, leagueId }} = req;
+    // username,
     const {params: { leagueId }} = req;
 
     teams.forEach(team => {
       const teamRef = ref.child(
-          // `data/${username}/${leagueId}/teams/${team.teamId}`
+          // `data/${username}
           `data/${leagueId}/teams/${team.teamId}`
       );
       teamRef.update(team);
@@ -71,17 +71,26 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+//Clear firebase database
+app.get('/delete', function(req, res) {
+  const db = admin.database();
+  const ref = db.ref();
+  const dataRef = ref.child(`data`);
+  dataRef.remove();
+  return res.send('Madden Data Cleared')
+});
+
 app.post(
-    // '/:username/:platform/:leagueId/week/:weekType/:weekNumber/:dataType',
+    // /:username
     '/:platform/:leagueId/week/:weekType/:weekNumber/:dataType',
     (req, res) => {
       const db = admin.database();
       const ref = db.ref();
       const {
-        // params: { username, leagueId, weekType, weekNumber, dataType },
+        //  username,
         params: { leagueId, weekType, weekNumber, dataType },
       } = req;
-      // const basePath = `data/${username}/${leagueId}/`;
+      // data/${username}
       const basePath = `data/${leagueId}/`;
       // "defense", "kicking", "passing", "punting", "receiving", "rushing"
       const statsPath = `${basePath}stats`;
@@ -140,17 +149,17 @@ app.post(
 );
 
 // ROSTERS
-// app.post('/:username/:platform/:leagueId/freeagents/roster', (req, res) => {
+// /:username
 app.post('/:platform/:leagueId/freeagents/roster', (req, res) => {
   res.sendStatus(200);
 });
 
-// app.post('/:username/:platform/:leagueId/team/:teamId/roster', (req, res) => {
+// /:username
 app.post('/:platform/:leagueId/team/:teamId/roster', (req, res) => {
   const db = admin.database();
   const ref = db.ref();
   const {
-    // params: { username, leagueId, teamId }
+    // username,
     params: { leagueId, teamId }
   } = req;
   let body = '';
@@ -160,7 +169,7 @@ app.post('/:platform/:leagueId/team/:teamId/roster', (req, res) => {
   req.on('end', () => {
     const { rosterInfoList } = JSON.parse(body);
     const dataRef = ref.child(
-        // `data/${username}/${leagueId}/teams/${teamId}/roster`
+        // `data/${username}
         `data/${leagueId}/teams/${teamId}/roster`
     );
     const players = {};
