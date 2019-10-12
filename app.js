@@ -72,13 +72,13 @@ function capitalizeFirstLetter(string) {
 }
 
 //Clear firebase database
-app.get('/delete', function(req, res) {
-  const db = admin.database();
-  const ref = db.ref();
-  const dataRef = ref.child(`data`);
-  dataRef.remove();
-  return res.send('Madden Data Cleared')
-});
+// app.get('/delete', function(req, res) {
+//   const db = admin.database();
+//   const ref = db.ref();
+//   const dataRef = ref.child(`data`);
+//   dataRef.remove();
+//   return res.send('Madden Data Cleared')
+// });
 
 app.post(
     // /:username
