@@ -19,6 +19,20 @@ app.get('*', (req, res) => {
   res.send('Madden Companion Exporter');
 });
 
+
+//Clear firebase database
+app.get('/delete', function(req, res) {
+  const db = admin.database();
+  const ref = db.ref();
+  let body = '';
+  req.on('data', chunk => {
+    body += chunk.toString();
+  });
+  const dataRef = ref.child(`data`);
+  dataRef.remove();
+  return res.send('Madden Data Cleared')
+});
+
 // /:username
 app.post('/:platform/:leagueId/leagueteams', (req, res) => {
   const db = admin.database();
@@ -70,15 +84,6 @@ app.post('/:platform/:leagueId/standings', (req, res) => {
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
-//Clear firebase database
-// app.get('/delete', function(req, res) {
-//   const db = admin.database();
-//   const ref = db.ref();
-//   const dataRef = ref.child(`data`);
-//   dataRef.remove();
-//   return res.send('Madden Data Cleared')
-// });
 
 app.post(
     // /:username
