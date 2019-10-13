@@ -24,10 +24,6 @@ app.get('*', (req, res) => {
 app.get('/delete', function(req, res) {
   const db = admin.database();
   const ref = db.ref();
-  let body = '';
-  req.on('data', chunk => {
-    body += chunk.toString();
-  });
   const dataRef = ref.child(`data`);
   dataRef.remove();
   return res.send('Madden Data Cleared')
